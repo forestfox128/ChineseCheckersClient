@@ -1,16 +1,16 @@
 package sample;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 
 public class Field {
     private int x, y, player;
-    private ImageView image;
+    private Circle circle;
 
-    public Field(int x, int y, ImageView image)
+    public Field(int x, int y, Circle circle)
     {
         this.x = x;
         this.y = y;
-        this.image = image;
+        this.circle = circle;
         player = 0;
     }
 

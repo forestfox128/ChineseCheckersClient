@@ -3,11 +3,13 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +31,26 @@ public class Controller {
     private Socket socket = null;
     private PrintWriter out = null;
 
+    @FXML
+    private void handleCircleEntered(MouseEvent event)
+    {
+        String id = ((Node)event.getSource()).getId();
+        String coordinates[] = id.split("x|y");
+        System.out.println("X: " + coordinates[1]);
+        System.out.println("Y: " + coordinates[2]);
+    }
+
+    @FXML
+    private void handleCircleClicked(MouseEvent event)
+    {
+        //System.out.println(((Node)event.getSource()).getId());
+    }
+
+    @FXML
+    private void handleCircleExited(MouseEvent event)
+    {
+        //System.out.println(((Node)event.getSource()).getId());
+    }
 
 
     @FXML
