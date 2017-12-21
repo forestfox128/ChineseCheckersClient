@@ -38,7 +38,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Game">
+          <Tab fx:id="gameTab" disable="true" text="Game">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -358,27 +358,27 @@
                                           <Insets left="2.24" right="2.24" />
                                        </HBox.margin>
                                     </Circle>
-                                    <Circle fill="#b96609" layoutX="183.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y15">
+                                    <Circle fill="#b96609" layoutX="183.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y13">
                                        <HBox.margin>
                                           <Insets left="2.24" right="2.24" />
                                        </HBox.margin>
                                     </Circle>
-                                    <Circle fill="#b96609" layoutX="211.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y17">
+                                    <Circle fill="#b96609" layoutX="211.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y15">
                                        <HBox.margin>
                                           <Insets left="2.24" right="2.24" />
                                        </HBox.margin>
                                     </Circle>
-                                    <Circle fill="#b96609" layoutX="197.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y19">
+                                    <Circle fill="#b96609" layoutX="197.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y17">
                                        <HBox.margin>
                                           <Insets left="2.24" right="2.24" />
                                        </HBox.margin>
                                     </Circle>
-                                    <Circle fill="#b96609" layoutX="225.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y21">
+                                    <Circle fill="#b96609" layoutX="225.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y19">
                                        <HBox.margin>
                                           <Insets left="2.24" right="2.24" />
                                        </HBox.margin>
                                     </Circle>
-                                    <Circle fill="#b96609" layoutX="253.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y23">
+                                    <Circle fill="#b96609" layoutX="253.0" layoutY="17.0" onMouseClicked="#handleCircleClicked" onMouseEntered="#handleCircleEntered" onMouseExited="#handleCircleExited" radius="7.0" stroke="BLACK" strokeType="INSIDE" fx:id="x7y21">
                                        <HBox.margin>
                                           <Insets left="2.24" right="2.24" />
                                        </HBox.margin>
