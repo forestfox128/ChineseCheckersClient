@@ -52,7 +52,7 @@
                               <Image url="@../assets/wooden-circle.png" />
                            </image>
                         </ImageView>
-                        <VBox layoutX="139.0" layoutY="12.0" prefHeight="345.0" prefWidth="323.0">
+                        <VBox fx:id="BoardBox" layoutX="139.0" layoutY="12.0" prefHeight="345.0" prefWidth="323.0">
                            <children>
                               <HBox alignment="TOP_CENTER" prefHeight="16.0" prefWidth="323.0" />
                               <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="16.0" prefWidth="323.0" />

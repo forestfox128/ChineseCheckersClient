@@ -1,11 +1,13 @@
 package sample;
 
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -31,79 +33,79 @@ public class Controller {
     private BufferedReader in = null;
 
     @FXML
-    private Circle x8y12;
+    private VBox BoardBox;
+    private Board Board = new Board();
 
     @FXML
     private Tab gameTab;
 
     private Circle Clicked = null;
 
-    @FXML
-    private void handleCircleEntered(MouseEvent event)
-    {
-        String id = ((Node)event.getSource()).getId();
-        String coordinates[] = id.split("x|y");
-        System.out.println("X: " + coordinates[1]);
-        System.out.println("Y: " + coordinates[2]);
-    }
 
     @FXML
     private void handleCircleClicked(MouseEvent event)
     {
-        System.out.println("DZIAŁĄM");
         if(((Circle)event.getSource()).getFill() == Color.BLACK)
         {
             ((Circle)event.getSource()).setFill(Color.WHITE);
             Clicked = (Circle) event.getSource();
-        }
-        else if(Clicked != null)
-        {
             String id = Clicked.getId();
             String old_xy[] = id.split("x|y");
-            id = ((Node)event.getSource()).getId();
-            String new_xy[] = id.split("x|y");
-            out.println("move:" + old_xy[1] + ":" + old_xy[2] + ":"
-            + new_xy[1] + ":" + new_xy[2]);
-//            String serverResponse = null;
-//            try {
-//                serverResponse = in.readLine();
-//                System.out.println(serverResponse);
-//            }
-//
-//            catch (IOException e) {
-//                System.out.println("Server doesn't respond!"); System.exit(1);
-//            }
-            if(true)
-            {
-                Clicked.setFill(Color.web("#b96609"));
-                ((Circle) event.getSource()).setFill(Color.BLACK);
-                Clicked = null;
+            out.println("checkMoves:" + old_xy[1] + ":" + old_xy[2]);
+            String serverResponse = null;
+            try {
+                serverResponse = in.readLine();
+                System.out.println(serverResponse);
             }
-            else
-            {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("NIE UMIESZ SIĘ RUSZAĆ");
-                alert.setHeaderText("PRZECZYTAJ ZASADY");
-                alert.setContentText("ZANIM ZAGRASZ IGNORANCIE");
-                alert.showAndWait();
+
+            catch (IOException e) {
+                System.out.println("Server doesn't respond!"); System.exit(1);
             }
+
+            System.out.println(serverResponse);
 
         }
     }
 
     @FXML
-    private void handleCircleExited(MouseEvent event)
-    {
-        //System.out.println(((Node)event.getSource()).getId());
+    private void handleCircleEntered(){};
+
+    @FXML
+    private void handleCircleExited(){};
+
+
+    void createBoard(){
+        ObservableList HBoxes = BoardBox.getChildren();
+        for(Object object: HBoxes)
+        {
+            HBox hbox = (HBox)object;
+            ObservableList FieldCircles = hbox.getChildren();
+            for(Object circleObject: FieldCircles)
+            {
+                Circle circle = (Circle)circleObject;
+                String id = circle.getId();
+                String xy[] = id.split("x|y");
+                try {
+                    Field field = new Field(Integer.parseInt(xy[1]), Integer.parseInt(xy[2]), circle);
+                    Board.setField(field);
+                    circle.setFill(Color.BLACK);
+                }
+                catch (NumberFormatException ex)
+                {
+                    System.out.println(id + "exception :(");
+                    System.out.println(xy[1]);
+                    System.out.println(xy[2]);
+                }
+
+            }
+        }
     }
 
 
     @FXML
     public void initialize(){
 
-        // Just for testing purposes
-        x8y12.setFill(Color.BLACK);
-        Clicked = x8y12;
+        createBoard();
 
         connectButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -112,7 +114,7 @@ public class Controller {
 
                 // łączenie się z serwerem
                 listenSocket();
-                out.println(name);
+                out.println("startGame:" + name);
 
                 connectionStatusLabel.setText("CONNECTED");
                 connectionStatusLabel.setTextFill(Color.GREEN);
@@ -126,7 +128,7 @@ public class Controller {
 
     public void listenSocket(){
         try {
-            socket = new Socket("localhost", 9999);
+            socket = new Socket("localhost", 6008);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }

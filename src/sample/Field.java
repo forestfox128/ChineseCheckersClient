@@ -14,6 +14,14 @@ public class Field {
         player = 0;
     }
 
+    public Field(int x, int y, Circle circle, int player)
+    {
+        this.x = x;
+        this.y = y;
+        this.circle = circle;
+        this.player = player;
+    }
+
     public int getX() {
         return x;
     }
