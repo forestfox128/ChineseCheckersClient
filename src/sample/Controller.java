@@ -11,12 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Controller {
 
@@ -28,9 +22,7 @@ public class Controller {
 
     @FXML
     private Label connectionStatusLabel;
-    private Socket socket = null;
-    private PrintWriter out = null;
-    private BufferedReader in = null;
+
 
     @FXML
     private VBox BoardBox;
@@ -40,6 +32,9 @@ public class Controller {
     private Tab gameTab;
 
     private Circle Clicked = null;
+
+    public ServerConnector serverConnector = ServerConnector.getINSTANCE();
+    private String message;
 
 
     @FXML
@@ -51,18 +46,10 @@ public class Controller {
             Clicked = (Circle) event.getSource();
             String id = Clicked.getId();
             String old_xy[] = id.split("x|y");
-            out.println("checkMoves:" + old_xy[1] + ":" + old_xy[2]);
-            String serverResponse = null;
-            try {
-                serverResponse = in.readLine();
-                System.out.println(serverResponse);
-            }
 
-            catch (IOException e) {
-                System.out.println("Server doesn't respond!"); System.exit(1);
-            }
+            message = serverConnector.sendInformation("checkMoves:" + old_xy[1] + ":" + old_xy[2]);
 
-            System.out.println(serverResponse);
+            System.out.println(message);
 
         }
     }
@@ -112,13 +99,15 @@ public class Controller {
             public void handle(MouseEvent e) {
                 String name = nameTextField.getText();
 
-                // łączenie się z serwerem
-                listenSocket();
-                out.println("startGame:" + name);
+                // łączenie się z serwerem -> sendInformation
 
-                connectionStatusLabel.setText("CONNECTED");
-                connectionStatusLabel.setTextFill(Color.GREEN);
-                gameTab.setDisable(false);
+                message = serverConnector.sendInformation("startGame:" + name);
+
+                if(message.equals("connected")) {
+                    connectionStatusLabel.setText("CONNECTED");
+                    connectionStatusLabel.setTextFill(Color.GREEN);
+                    gameTab.setDisable(false);
+                }
 
             }
         });
@@ -126,19 +115,4 @@ public class Controller {
         System.out.println(connectionStatusLabel.getText());
     }
 
-    public void listenSocket(){
-        try {
-            socket = new Socket("localhost", 6008);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }
-
-        catch (UnknownHostException e) {
-            System.out.println("Unknown host: localhost"); System.exit(1);
-        }
-
-        catch  (IOException e) {
-            System.out.println("No I/O"); //System.exit(1);
-        }
-    }
 }
