@@ -38,4 +38,8 @@ public class Field {
     {
         this.player = player;
     }
+
+    public Circle getCircle() {
+        return circle;
+    }
 }

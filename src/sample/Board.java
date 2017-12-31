@@ -16,4 +16,9 @@ public class Board {
     {
         Fields[field.getX()][field.getY()] = field;
     }
+
+    public Field getField(int x, int y)
+    {
+        return Fields[x][y];
+    }
 }

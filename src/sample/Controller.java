@@ -3,7 +3,6 @@ package sample;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -40,9 +39,10 @@ public class Controller {
     @FXML
     private void handleCircleClicked(MouseEvent event)
     {
-        if(((Circle)event.getSource()).getFill() == Color.BLACK)
+        updateBoard();
+        if(PlayerColor.isPlayerColor(((Circle)event.getSource()).getFill()) != 0)
         {
-            ((Circle)event.getSource()).setFill(Color.WHITE);
+            ((Circle)event.getSource()).setFill(Color.BLACK);
             Clicked = (Circle) event.getSource();
             String id = Clicked.getId();
             String old_xy[] = id.split("x|y");
@@ -51,6 +51,26 @@ public class Controller {
 
             System.out.println(message);
 
+            String[] fields = message.split(",");
+            for (String field : fields) {
+                try {
+                    String[] info = field.split(":");
+                    int x = Integer.parseInt(info[0]);
+                    int y = Integer.parseInt(info[1]);
+                    if (Board.getField(x, y) != null)
+                        Board.getField(x, y).getCircle().setFill(Color.WHITE);
+                }
+                catch (NumberFormatException ex)
+                {
+                    System.out.println("num ex handleClick");
+                }
+                }
+            System.out.println(message);
+
+        }
+        else if(((Circle)(event.getSource())).getFill() == Color.WHITE)
+        {
+            // RUSZANIE SIĘ KLIKNIĘTYM ZIOMKIEM
         }
     }
 
@@ -59,6 +79,25 @@ public class Controller {
 
     @FXML
     private void handleCircleExited(){};
+
+    void updateBoard(){
+        String msg = serverConnector.sendInformation("getBoard");
+
+        String[] fields = msg.split(",");
+        for (String field : fields) {
+            try {
+                String[] info = field.split(":");
+                int x = Integer.parseInt(info[0]);
+                int y = Integer.parseInt(info[1]);
+                int player = Integer.parseInt(info[2]);
+                if(Board.getField(x, y) != null)
+                    Board.getField(x, y).getCircle().setFill(PlayerColor.getColor(player));
+            } catch (NumberFormatException ex)
+            {
+                System.out.println("num ex updateBoard");
+            }
+        }
+    }
 
 
     void createBoard(){
@@ -86,13 +125,15 @@ public class Controller {
 
             }
         }
+
+        updateBoard();
+
+
     }
 
 
     @FXML
     public void initialize(){
-
-        createBoard();
 
         connectButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -107,6 +148,7 @@ public class Controller {
                     connectionStatusLabel.setText("CONNECTED");
                     connectionStatusLabel.setTextFill(Color.GREEN);
                     gameTab.setDisable(false);
+                    createBoard();
                 }
 
             }
