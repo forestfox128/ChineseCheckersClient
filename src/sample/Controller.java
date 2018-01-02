@@ -32,7 +32,7 @@ public class Controller {
 
     private Circle Clicked = null;
 
-    public ServerConnector serverConnector = ServerConnector.getINSTANCE();
+    private ServerConnector serverConnector = ServerConnector.getINSTANCE();
     private String message;
 
 
@@ -131,6 +131,24 @@ public class Controller {
 
     }
 
+    //TODO ogarnąc czekanie klienta aż dostanie informacje ("Game start") że jest wystarczająca liczba graczy , to poniżej nie całkie działa
+    @FXML
+    public void waitForPlayers(){
+
+        message = serverConnector.sendInformation("enoughPlayers");
+
+        if(message.equals("Game start")) {
+            gameTab.setDisable(false);
+            connectionStatusLabel.setTextFill(Color.GREEN);
+        }
+        else if(message.equals("Not enough players")){
+            System.out.println("Not enough players");
+            waitForPlayers();
+        }
+
+
+    }
+
 
     @FXML
     public void initialize(){
@@ -146,9 +164,11 @@ public class Controller {
 
                 if(message.equals("connected")) {
                     connectionStatusLabel.setText("CONNECTED");
-                    connectionStatusLabel.setTextFill(Color.GREEN);
-                    gameTab.setDisable(false);
+                    connectionStatusLabel.setTextFill(Color.ORANGE);
+                    waitForPlayers();
                     createBoard();
+                    //gameTab.setDisable(false);
+
                 }
 
             }
