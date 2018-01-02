@@ -39,11 +39,15 @@ public class Controller {
     @FXML
     private void handleCircleClicked(MouseEvent event)
     {
-        updateBoard();
         if(PlayerColor.isPlayerColor(((Circle)event.getSource()).getFill()) != 0)
         {
-            ((Circle)event.getSource()).setFill(Color.BLACK);
+            updateBoard();
+            if(Clicked != null)
+            {
+                Clicked.setStrokeWidth(1.0);
+            }
             Clicked = (Circle) event.getSource();
+            Clicked.setStrokeWidth(2.0);
             String id = Clicked.getId();
             String old_xy[] = id.split("x|y");
 
@@ -66,11 +70,15 @@ public class Controller {
                 }
                 }
             System.out.println(message);
-
         }
         else if(((Circle)(event.getSource())).getFill() == Color.WHITE)
         {
-            // RUSZANIE SIĘ KLIKNIĘTYM ZIOMKIEM
+            System.out.println("Tu jestem :)");
+            Circle target = ((Circle)(event.getSource()));
+            String coordinates[] = getCoordinates(target);
+            String clickedCoordinates[] = getCoordinates(Clicked);
+            movePawn(Integer.parseInt(clickedCoordinates[1]), Integer.parseInt(clickedCoordinates[2]),
+                    Integer.parseInt(coordinates[1]), Integer.parseInt(coordinates[2]));
         }
     }
 
@@ -127,8 +135,21 @@ public class Controller {
         }
 
         updateBoard();
+    }
 
+    private void movePawn (int oldX, int oldY, int newX, int newY)
+    {
+        System.out.println("Moved!");
+        String message = serverConnector.sendInformation("move:" + oldX + ":" + oldY
+        + ":" + newX + ":" + newY);
+        updateBoard();
+    }
 
+    private String[] getCoordinates (Circle circle)
+    {
+        String id = circle.getId();
+        String xy[] = id.split("x|y");
+        return xy;
     }
 
 
