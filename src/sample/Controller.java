@@ -22,6 +22,8 @@ public class Controller {
     @FXML
     private Label connectionStatusLabel;
 
+    private int myID;
+
 
     @FXML
     private VBox BoardBox;
@@ -39,7 +41,7 @@ public class Controller {
     @FXML
     private void handleCircleClicked(MouseEvent event)
     {
-        if(PlayerColor.isPlayerColor(((Circle)event.getSource()).getFill()) != 0)
+        if(PlayerColor.isPlayerColor(((Circle)event.getSource()).getFill()) == myID)
         {
             updateBoard();
             if(Clicked != null)
@@ -90,7 +92,10 @@ public class Controller {
 
     void updateBoard(){
         String msg = serverConnector.sendInformation("getBoard");
+        if(msg.substring(0,7) == "endGame")
+        {
 
+        }
         String[] fields = msg.split(",");
         for (String field : fields) {
             try {
@@ -141,7 +146,8 @@ public class Controller {
     {
         System.out.println("Moved!");
         String message = serverConnector.sendInformation("move:" + oldX + ":" + oldY
-        + ":" + newX + ":" + newY);
+        + ":" + newX + ":" + newY + ":" + myID);
+        System.out.println("Moved!");
         updateBoard();
     }
 
@@ -165,11 +171,12 @@ public class Controller {
 
                 message = serverConnector.sendInformation("startGame:" + name);
 
-                if(message.equals("connected")) {
+                if(message.substring(0,9).equals("connected")) {
                     connectionStatusLabel.setText("CONNECTED");
                     connectionStatusLabel.setTextFill(Color.GREEN);
                     gameTab.setDisable(false);
                     createBoard();
+                    myID = Integer.parseInt(message.substring(10));
                 }
 
             }
