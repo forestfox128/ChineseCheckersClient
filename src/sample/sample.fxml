@@ -52,6 +52,11 @@
                               <Image url="@../assets/wooden-circle.png" />
                            </image>
                         </ImageView>
+                        <Label fx:id="infoLabel" layoutX="263.0" layoutY="-7.0" text="Twoja tura!" textFill="#b20dac">
+                           <padding>
+                              <Insets top="35.0" />
+                           </padding>
+                        </Label>
                         <VBox fx:id="BoardBox" layoutX="139.0" layoutY="12.0" prefHeight="345.0" prefWidth="323.0">
                            <children>
                               <HBox alignment="TOP_CENTER" prefHeight="16.0" prefWidth="323.0" />

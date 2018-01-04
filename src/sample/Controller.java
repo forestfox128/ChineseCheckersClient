@@ -17,13 +17,15 @@ public class Controller {
     private TextField nameTextField;
 
     @FXML
+    public Label infoLabel;
+
+    @FXML
     private Button connectButton;
 
     @FXML
     private Label connectionStatusLabel;
 
     private int myID;
-
 
     @FXML
     private VBox BoardBox;
@@ -36,51 +38,51 @@ public class Controller {
 
     public ServerConnector serverConnector = ServerConnector.getINSTANCE();
     private String message;
-
+    private Updater boardUpdater;
 
     @FXML
     private void handleCircleClicked(MouseEvent event)
     {
-        if(PlayerColor.isPlayerColor(((Circle)event.getSource()).getFill()) == myID)
+        if(boardUpdater.checkTurn() == myID)
         {
-            updateBoard();
-            if(Clicked != null)
+            if(PlayerColor.isPlayerColor(((Circle)event.getSource()).getFill()) == myID)
             {
-                Clicked.setStrokeWidth(1.0);
-            }
-            Clicked = (Circle) event.getSource();
-            Clicked.setStrokeWidth(2.0);
-            String id = Clicked.getId();
-            String old_xy[] = id.split("x|y");
-
-            message = serverConnector.sendInformation("checkMoves:" + old_xy[1] + ":" + old_xy[2]);
-
-            System.out.println(message);
-
-            String[] fields = message.split(",");
-            for (String field : fields) {
-                try {
-                    String[] info = field.split(":");
-                    int x = Integer.parseInt(info[0]);
-                    int y = Integer.parseInt(info[1]);
-                    if (Board.getField(x, y) != null)
-                        Board.getField(x, y).getCircle().setFill(Color.WHITE);
-                }
-                catch (NumberFormatException ex)
+                boardUpdater.updateBoard();
+                if(Clicked != null)
                 {
-                    System.out.println("num ex handleClick");
+                    Clicked.setStrokeWidth(1.0);
                 }
+                Clicked = (Circle) event.getSource();
+                Clicked.setStrokeWidth(2.0);
+                String id = Clicked.getId();
+                String old_xy[] = id.split("x|y");
+
+                message = serverConnector.sendInformation("checkMoves:" + old_xy[1] + ":" + old_xy[2]);
+
+                String[] fields = message.split(",");
+                for (String field : fields) {
+                    try {
+                        String[] info = field.split(":");
+                        int x = Integer.parseInt(info[0]);
+                        int y = Integer.parseInt(info[1]);
+                        if (Board.getField(x, y) != null)
+                            Board.getField(x, y).getCircle().setFill(Color.WHITE);
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        System.out.println("num ex handleClick");
+                    }
                 }
-            System.out.println(message);
-        }
-        else if(((Circle)(event.getSource())).getFill() == Color.WHITE)
-        {
-            System.out.println("Tu jestem :)");
-            Circle target = ((Circle)(event.getSource()));
-            String coordinates[] = getCoordinates(target);
-            String clickedCoordinates[] = getCoordinates(Clicked);
-            movePawn(Integer.parseInt(clickedCoordinates[1]), Integer.parseInt(clickedCoordinates[2]),
-                    Integer.parseInt(coordinates[1]), Integer.parseInt(coordinates[2]));
+                System.out.println(message);
+            }
+            else if(((Circle)(event.getSource())).getFill() == Color.WHITE)
+            {
+                Circle target = ((Circle)(event.getSource()));
+                String coordinates[] = getCoordinates(target);
+                String clickedCoordinates[] = getCoordinates(Clicked);
+                movePawn(Integer.parseInt(clickedCoordinates[1]), Integer.parseInt(clickedCoordinates[2]),
+                        Integer.parseInt(coordinates[1]), Integer.parseInt(coordinates[2]));
+            }
         }
     }
 
@@ -89,28 +91,6 @@ public class Controller {
 
     @FXML
     private void handleCircleExited(){};
-
-    void updateBoard(){
-        String msg = serverConnector.sendInformation("getBoard");
-        if(msg.substring(0,7) == "endGame")
-        {
-
-        }
-        String[] fields = msg.split(",");
-        for (String field : fields) {
-            try {
-                String[] info = field.split(":");
-                int x = Integer.parseInt(info[0]);
-                int y = Integer.parseInt(info[1]);
-                int player = Integer.parseInt(info[2]);
-                if(Board.getField(x, y) != null)
-                    Board.getField(x, y).getCircle().setFill(PlayerColor.getColor(player));
-            } catch (NumberFormatException ex)
-            {
-                System.out.println("num ex updateBoard");
-            }
-        }
-    }
 
 
     void createBoard(){
@@ -139,16 +119,13 @@ public class Controller {
             }
         }
 
-        updateBoard();
     }
 
     private void movePawn (int oldX, int oldY, int newX, int newY)
     {
-        System.out.println("Moved!");
         String message = serverConnector.sendInformation("move:" + oldX + ":" + oldY
         + ":" + newX + ":" + newY + ":" + myID);
-        System.out.println("Moved!");
-        updateBoard();
+        boardUpdater.resume();
     }
 
     private String[] getCoordinates (Circle circle)
@@ -177,6 +154,9 @@ public class Controller {
                     gameTab.setDisable(false);
                     createBoard();
                     myID = Integer.parseInt(message.substring(10));
+                    System.out.println("Moje id to " + myID);
+                    boardUpdater = new Updater(serverConnector, Board, myID, infoLabel);
+                    boardUpdater.start();
                 }
 
             }
