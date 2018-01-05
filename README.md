@@ -12,7 +12,7 @@ Name |  Version |
 | [JavaFX](http://www.oracle.com/technetwork/java/javafx/downloads/supportedconfigurations-1506746.html) | 8.0.0 |
 | [JUnit](http://junit.org/junit4/) | 4.12 |
 
-## Authors
+Authors |
 | :---: |
 | [Basia Bananaszak](https://github.com/forestfox) |
 | [Jan Librowski](https://github.com/liibrox) |
