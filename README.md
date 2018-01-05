@@ -10,7 +10,7 @@ This repository is a client part of the applications. Currently, you have to dow
 
 ## Game appearance
 
-<p text-align="center"><img title="game screen" src="https://i.imgur.com/wppiu1H.png"></p>
+<p align="center"><img title="game screen" src="https://i.imgur.com/wppiu1H.png"></p>
 
 ## Technology stack 
 
