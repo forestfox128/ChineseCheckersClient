@@ -36,7 +36,7 @@ public class Updater extends Thread {
     }
 
     public void updateBoard(){
-        System.out.println("updateBoard");
+//        System.out.println("updateBoard");
         String msg = connector.sendInformation("getBoard");
         if(msg.substring(0,7) == "endGame")
         {
@@ -53,7 +53,7 @@ public class Updater extends Thread {
                     board.getField(x, y).getCircle().setFill(PlayerColor.getColor(player));
             } catch (NumberFormatException ex)
             {
-                System.out.println("num ex updateBoard");
+//                System.out.println("num ex updateBoard");
             }
         }
     }
@@ -65,13 +65,14 @@ public class Updater extends Thread {
             Platform.runLater(new Runnable() {
                 public void run() {
                     info.setText("Twoja tura!");
+                    info.setTextFill(PlayerColor.getColor(Integer.parseInt(msg)));
                 }
-
             });
         else
             Platform.runLater(new Runnable() {
                 public void run() {
                     info.setText("Rusza się " + Integer.parseInt(msg) + "...");
+                    info.setTextFill(PlayerColor.getColor(Integer.parseInt(msg)));
                 }
 
             });

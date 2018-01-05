@@ -70,7 +70,7 @@ public class Controller {
                     }
                     catch (NumberFormatException ex)
                     {
-                        System.out.println("num ex handleClick");
+//                        System.out.println("num ex handleClick");
                     }
                 }
                 System.out.println(message);
@@ -154,7 +154,7 @@ public class Controller {
                     gameTab.setDisable(false);
                     createBoard();
                     myID = Integer.parseInt(message.substring(10));
-                    System.out.println("Moje id to " + myID);
+//                    System.out.println("Moje id to " + myID);
                     boardUpdater = new Updater(serverConnector, Board, myID, infoLabel);
                     boardUpdater.start();
                 }
@@ -162,7 +162,7 @@ public class Controller {
             }
         });
 
-        System.out.println(connectionStatusLabel.getText());
+//        System.out.println(connectionStatusLabel.getText());
     }
 
 }
