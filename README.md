@@ -13,5 +13,6 @@ Name |  Version |
 | [JUnit](http://junit.org/junit4/) | 4.12 |
 
 ## Authors
+| :---: |
 | [Basia Bananaszak](https://github.com/forestfox) |
 | [Jan Librowski](https://github.com/liibrox) |
