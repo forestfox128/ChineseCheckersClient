@@ -8,7 +8,7 @@ This repository is a client part of the applications. Currently, you have to dow
 
 [Server repository](https://github.com/Librox/ChineseCheckersServer)
 
-<img title="game screen" align="middle" src="https://i.imgur.com/wppiu1H.png">
+<center><img title="game screen" src="https://i.imgur.com/wppiu1H.png"></center>
 
 ## Technology stack 
 
